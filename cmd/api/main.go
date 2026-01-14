@@ -49,6 +49,10 @@ func main() {
 		return c.Redirect(http.StatusFound, target)
 	})
 
+	e.Any("/abs-redirect", func(c echo.Context) error {
+		return c.Redirect(http.StatusFound, "http://api:5001/")
+	})
+
 	addr := ":5001"
 	if p := os.Getenv("PORT"); p != "" {
 		addr = ":" + p
