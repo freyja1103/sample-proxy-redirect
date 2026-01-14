@@ -1,0 +1,12 @@
+FROM golang:1.25-alpine AS build
+WORKDIR /src
+COPY go.mod ./
+RUN go mod download
+COPY . .
+WORKDIR /src/cmd/api
+RUN CGO_ENABLED=0 GOOS=linux go build -o /bin/api
+
+FROM alpine:3.18
+COPY --from=build /bin/api /bin/api
+EXPOSE 5001
+ENTRYPOINT ["/bin/api"]
